@@ -45,7 +45,7 @@ do
 
     if [ -z "$(head -n1 $OUT)"];
     then
-        echo "skipping country ${COUNTRY}"
+        echo "skipping country: ${COUNTRY}"
     else
         IPS=$(egrep -v "^#|^$" $OUT)
         for IP in $IPS
