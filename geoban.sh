@@ -5,7 +5,7 @@ PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 BASEDIRSCRIPT=$(dirname $0)
 BASENAMESCRIPT=$(basename $0)
 
-IPDENY_BASEURL="https://www.ipdeny.com/ipblocks/data/countries/"
+IPDENY_BASEURL="http://www.ipdeny.com/ipblocks/data/countries/"
 
 GEOCHAIN="bannedcountries"
 
@@ -25,9 +25,18 @@ fi
 if [ -z "${BANED_COUNTRIES}" ];
 then
     echo "no countries defined"
+    exit 1
 fi
 
+if [ -z "${GEOCHAIN}" ];
+then
+    echo "ERROR - geochain empty"
+    exit 1
+fi
+
+iptables -F $GEOCHAIN > /dev/null 2>&1
 iptables -X $GEOCHAIN > /dev/null 2>&1
+iptables -N $GEOCHAIN
 
 for COUNTRY in $BANED_COUNTRIES;
 do
@@ -45,4 +54,6 @@ do
             iptables -A $GEOCHAIN -s $IP -j DROP
         done
     fi
+
+    rm $OUT
 done
