@@ -1,1 +1,2 @@
 BANED_COUNTRIES = "ru cn"
+GEOCHAIN="bannedcountries"
